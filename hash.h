@@ -20,15 +20,46 @@ struct MyStringHash {
     HASH_INDEX_T operator()(const std::string& k) const
     {
         // Add your code here
+        unsigned long long w[5] = {0, 0, 0, 0, 0};
+        
+        int subGroup = 4
+        for (int i = k.size(); i > 0 && subGroup >= 0; i -= 6, --subGroup) {
+          unsigned long long value = 0; // "012345abc" i = 9
+          value += letterDigitToNumber(k[i - 1]) * 1ULL;
+          if (i - 2 >= 0)
+            value += letterDigitToNumber(k[i - 2]) * 36ULL;
+          if (i - 3 >= 0)
+            value += letterDigitToNumber(k[i - 3]) * 1296UULL;
+          if (i - 4 >= 0)
+            value += letterDigitToNumber(k[i - 4]) * 46656ULL;
+          if (i - 5 >= 0)
+            value += letterDigitToNumber(k[i - 5]) * 1679616ULL;
+          if (i - 6 >= 0)
+            value += letterDigitToNumber(k[i - 6]) * 604661776ULL;
 
+          w[subGroup] = value;
+        }
 
+        unsigned long long output = 0;
+        for (int i = 0; i < 5; ++i) {
+          output += rValues[i] * w[i];
+        }
+        return output;
     }
 
     // A likely helper function is to convert a-z,0-9 to an integral value 0-35
     HASH_INDEX_T letterDigitToNumber(char letter) const
     {
         // Add code here or delete this helper function if you do not want it
-
+        if (letter >= 'a' && letter <= 'z') {
+          return static_cast<HASH_INDEX_T>(letter - 'a');
+        }
+        else if (letter >= 'A' && letter <= 'Z') {
+          return static_cast<HASH_INDEX_T>(letter - 'A');
+        }
+        else {
+          return static_cast<HASH_INDEX_T>(letter - 'a');
+        }
     }
 
     // Code to generate the random R values
