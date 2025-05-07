@@ -23,12 +23,12 @@ struct MyStringHash {
         unsigned long long w[5] = {0, 0, 0, 0, 0};
         
         for (int i = k.size(), subString = 4; i > 0 && subString >= 0; i -= 6, --subString) {
-          unsigned long long value = 0; // "012345abc" i = 9
+          unsigned long long value = 0;
           value += letterDigitToNumber(k[i - 1]) * 1ULL;
           if (i - 2 >= 0)
             value += letterDigitToNumber(k[i - 2]) * 36ULL;
           if (i - 3 >= 0)
-            value += letterDigitToNumber(k[i - 3]) * 1296UULL;
+            value += letterDigitToNumber(k[i - 3]) * 1296ULL;
           if (i - 4 >= 0)
             value += letterDigitToNumber(k[i - 4]) * 46656ULL;
           if (i - 5 >= 0)
