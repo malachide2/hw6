@@ -34,7 +34,7 @@ struct MyStringHash {
           if (i - 5 >= 0)
             value += letterDigitToNumber(k[i - 5]) * 1679616ULL;
           if (i - 6 >= 0)
-            value += letterDigitToNumber(k[i - 6]) * 604661776ULL;
+            value += letterDigitToNumber(k[i - 6]) * 60466176ULL;
 
           w[subString] = value;
         }
@@ -57,7 +57,7 @@ struct MyStringHash {
           return static_cast<HASH_INDEX_T>(letter - 'A');
         }
         else {
-          return static_cast<HASH_INDEX_T>(letter - 'a');
+          return static_cast<HASH_INDEX_T>(letter - '0' + 26);
         }
     }
 
