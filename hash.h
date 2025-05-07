@@ -22,8 +22,7 @@ struct MyStringHash {
         // Add your code here
         unsigned long long w[5] = {0, 0, 0, 0, 0};
         
-        int subGroup = 4
-        for (int i = k.size(); i > 0 && subGroup >= 0; i -= 6, --subGroup) {
+        for (int i = k.size(), subString = 4; i > 0 && subString >= 0; i -= 6, --subString) {
           unsigned long long value = 0; // "012345abc" i = 9
           value += letterDigitToNumber(k[i - 1]) * 1ULL;
           if (i - 2 >= 0)
@@ -37,7 +36,7 @@ struct MyStringHash {
           if (i - 6 >= 0)
             value += letterDigitToNumber(k[i - 6]) * 604661776ULL;
 
-          w[subGroup] = value;
+          w[subString] = value;
         }
 
         unsigned long long output = 0;
