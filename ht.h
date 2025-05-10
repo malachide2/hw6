@@ -321,7 +321,7 @@ size_t HashTable<K,V,Prober,Hash,KEqual>::size() const
 {
   size_t count = 0;
   for (auto entry : table_) {
-    if (!entry->deleted)
+    if (entry != nullptr && !entry->deleted)
       ++count;
   }
   return count;
@@ -433,7 +433,7 @@ void HashTable<K,V,Prober,Hash,KEqual>::resize()
   if (mIndex_ + 1 >= sizeof(CAPACITIES) / sizeof(HASH_INDEX_T)) {
     throw std::logic_error("No more capacity");
   }
-  
+
   std::vector<HashItem*> oldTable = std::move(table_);
   table_ = std::vector<HashItem*>(CAPACITIES[++mIndex_], nullptr);
   for (auto entry : oldTable) {
