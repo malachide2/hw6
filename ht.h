@@ -320,7 +320,7 @@ template<typename K, typename V, typename Prober, typename Hash, typename KEqual
 size_t HashTable<K,V,Prober,Hash,KEqual>::size() const
 {
   size_t count = 0;
-  for (auto& entry : table_) {
+  for (auto entry : table_) {
     if (!entry->deleted)
       ++count;
   }
@@ -338,7 +338,7 @@ void HashTable<K,V,Prober,Hash,KEqual>::insert(const ItemType& p)
   if (h == npos)
     throw std::logic_error("full");
 
-  if(table_[h] == nullptr) {
+  if (table_[h] == nullptr) {
     table_[h] = new HashItem(p);
   }
   else if (table_[h]->deleted) {
@@ -357,7 +357,6 @@ void HashTable<K,V,Prober,Hash,KEqual>::remove(const KeyType& key)
   HASH_INDEX_T h = probe(key);
   if (h != npos && table_[h] != nullptr && !table_[h]->deleted)
     table_[h]->deleted = true;
-
 }
 
 
@@ -435,13 +434,14 @@ void HashTable<K,V,Prober,Hash,KEqual>::resize()
     throw std::logic_error("No more capacity");
   }
   
+  std::cout << "FAILED" << std::endl;
   std::vector<HashItem*> oldTable = std::move(table_);
   table_ = std::vector<HashItem*>(CAPACITIES[++mIndex_], nullptr);
-  for (auto item : table_) {
-    if (item != nullptr && !item->deleted) {
-      insert(item->item);
+  for (auto entry : oldTable) {
+    if (entry != nullptr && !entry->deleted) {
+      insert(entry->item);
     }
-    delete item;
+    delete entry;
   }
 }
 
