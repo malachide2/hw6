@@ -100,11 +100,12 @@ if (r >= board.size() || c >= board[0].size())
 
 word += board[r][c];
 
-if (prefix.find(word) == prefix.end())
-  return false;
+if (prefix.find(word) == prefix.end()) { // If not a prefix
+  if (dict.find(word) != dict.end())     // But is a word
+    result.insert(word);
 
-if (dict.find(word) != dict.end())
-  result.insert(word);
+  return false;
+}
 
 return boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, dr, dc);
 }
