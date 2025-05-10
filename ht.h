@@ -354,7 +354,7 @@ void HashTable<K,V,Prober,Hash,KEqual>::insert(const ItemType& p)
 template<typename K, typename V, typename Prober, typename Hash, typename KEqual>
 void HashTable<K,V,Prober,Hash,KEqual>::remove(const KeyType& key)
 {
-  HASH_INDEX_T h = probe(p.first);
+  HASH_INDEX_T h = probe(key);
   if (h != npos && table_[h] != nullptr && !table_[h]->deleted)
     table_[h]->deleted = true;
 
@@ -435,9 +435,10 @@ void HashTable<K,V,Prober,Hash,KEqual>::resize()
     throw std::logic_error("No more capacity");
   }
   
-  std::vector<HashItem*> oldTable = std::exchange(table_, std::vector<HashItem*>(CAPACITIES[++mIndex_], nullptr));
+  std::vector<HashItem*> oldTable = std::move(table_);
+  table_ = std::vector<HashItem*>(CAPACITIES[++mIndex_], nullptr);
   for (auto item : table_) {
-    if (item != nullptr && !item->delted) {
+    if (item != nullptr && !item->deleted) {
       insert(item->item);
     }
     delete item;
@@ -460,7 +461,7 @@ HASH_INDEX_T HashTable<K,V,Prober,Hash,KEqual>::probe(const KeyType& key) const
         }
         // fill in the condition for this else if statement which should 
         // return 'loc' if the given key exists at this location
-        else if(/* Fill me in */) {
+        else if(table_[loc]->item.first == key) {
             return loc;
         }
         loc = prober_.next();
