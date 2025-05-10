@@ -95,24 +95,16 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 								   std::string word, std::set<std::string>& result, unsigned int r, unsigned int c, int dr, int dc)
 {
 //add your solution here!
-// Base case: Check if the current position is out of bounds
-if (r >= board.size() || c >= board[0].size()) {
+if (r >= board.size() || c >= board[0].size())
   return false;
-}
 
-// Add the current character to the word
 word += board[r][c];
 
-// If the word is not a prefix of any word in the dictionary, stop recursion
-if (prefix.find(word) == prefix.end()) {
+if (prefix.find(word) == prefix.end())
   return false;
-}
 
-// If the word is in the dictionary, add it to the result set
-if (dict.find(word) != dict.end()) {
+if (dict.find(word) != dict.end())
   result.insert(word);
-}
 
-// Recurse to the next position in the given direction
 return boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, dr, dc);
 }
