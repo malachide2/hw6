@@ -273,7 +273,7 @@ private:
     HASH_INDEX_T mIndex_;  // index to CAPACITIES
 
     // ADD MORE DATA MEMBERS HERE, AS NECESSARY
-
+    double alpha_ = 0.4;
 };
 
 // ----------------------------------------------------------------------------
@@ -293,7 +293,7 @@ const HASH_INDEX_T HashTable<K,V,Prober,Hash,KEqual>::CAPACITIES[] =
 template<typename K, typename V, typename Prober, typename Hash, typename KEqual>
 HashTable<K,V,Prober,Hash,KEqual>::HashTable(
     double resizeAlpha, const Prober& prober, const Hasher& hash, const KEqual& kequal)
-       :  hash_(hash), kequal_(kequal), prober_(prober), mIndex_(0)
+       :  hash_(hash), kequal_(kequal), prober_(prober), mIndex_(0), alpha_(resizeAlpha)
 {
     // Initialize any other data members as necessary
     table_.resize(CAPACITIES[mIndex_], nullptr);
@@ -331,7 +331,7 @@ size_t HashTable<K,V,Prober,Hash,KEqual>::size() const
 template<typename K, typename V, typename Prober, typename Hash, typename KEqual>
 void HashTable<K,V,Prober,Hash,KEqual>::insert(const ItemType& p)
 {
-  if ((double)size() / CAPACITIES[mIndex_] >= 0.7)
+  if ((double)size() / CAPACITIES[mIndex_] >= alpha_)
     resize();
 
   HASH_INDEX_T h = probe(p.first);
