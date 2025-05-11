@@ -331,7 +331,13 @@ size_t HashTable<K,V,Prober,Hash,KEqual>::size() const
 template<typename K, typename V, typename Prober, typename Hash, typename KEqual>
 void HashTable<K,V,Prober,Hash,KEqual>::insert(const ItemType& p)
 {
-  if ((double)size() / CAPACITIES[mIndex_] >= alpha_)
+  size_t occupied = 0;
+  for (auto entry : table_) {
+    if (entry != nullptr)
+      ++occupied;
+  }
+
+  if ((double)occupied / CAPACITIES[mIndex_] >= alpha_)
     resize();
 
   HASH_INDEX_T h = probe(p.first);
