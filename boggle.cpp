@@ -97,14 +97,17 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
   //add your solution here!
   word += board[r][c];
   // If a longer word could exist recurse
+  bool longerWordInserted = false;
   if (prefix.find(word) != prefix.end() && (r + dr < board.size() && c + dc < board[0].size()))
-    return boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, dr, dc);
+    longerWordInserted = boggleHelper(dict, prefix, board, word, result, r + dr, c + dc, dr, dc);
 
-  while (dict.find(word) == dict.end() && word.size() > 0) {
-    word.pop_back();
+  if (longerWordInserted)
+    return true;
+  
+  if (dict.find(word) != dict.end()) {
+    result.insert(word);
+    return true;
   }
-  if (word.size() == 0)
-    return false;
-  result.insert(word);
+  
   return false;
 }
